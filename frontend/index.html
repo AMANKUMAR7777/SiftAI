@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SiftAI Universal File Organizer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand-area">
+        <div class="brand-logo-icon">
+          <!-- Clean geometric SVG logo -->
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7" rx="2"></rect>
+            <rect x="14" y="3" width="7" height="7" rx="2"></rect>
+            <rect x="14" y="14" width="7" height="7" rx="2"></rect>
+            <rect x="3" y="14" width="7" height="7" rx="2"></rect>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <h1>SiftAI</h1>
+          <p>Universal Organizer</p>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <button class="nav-item active" data-tab="workspace">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <span>Workspace</span>
+        </button>
+
+        <button class="nav-item" data-tab="tree">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+            <path d="M3 9h18"></path>
+            <path d="M9 21V9"></path>
+          </svg>
+          <span>Folder Tree</span>
+        </button>
+
+        <button class="nav-item" data-tab="history">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+            <path d="M3 3v5h5"></path>
+            <path d="M12 7v5l4 2"></path>
+          </svg>
+          <span>Safety and History</span>
+        </button>
+
+        <button class="nav-item" data-tab="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          <span>Model Settings</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer-card">
+        <div class="status-indicator" id="sidebarOllamaStatus">
+          <div class="status-dot"></div>
+          <span id="ollamaStatusText">Ollama Connected</span>
+        </div>
+        <div class="model-name-badge" id="sidebarActiveModel">
+          Model: qwen2.5 3b
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-wrapper">
+      
+      <!-- Top Header -->
+      <header class="top-header">
+        <div class="header-left">
+          <h2>Universal File Organizer</h2>
+          <p>Intelligent semantic sorting for any folder or drive on your computer</p>
+        </div>
+      </header>
+
+      <!-- Stats Strip -->
+      <section class="stats-strip">
+        <div class="stat-card">
+          <div class="stat-icon-wrapper purple">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+              <polyline points="13 2 13 9 20 9"></polyline>
+            </svg>
+          </div>
+          <div class="stat-content">
+            <p>FILES FOUND</p>
+            <h3 id="statTotalFiles">0</h3>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper mint">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+              <line x1="7" y1="7" x2="7.01" y2="7"></line>
+            </svg>
+          </div>
+          <div class="stat-content">
+            <p>CATEGORIZED</p>
+            <h3 id="statCategorized">0</h3>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper sky">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+              <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+              <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+            </svg>
+          </div>
+          <div class="stat-content">
+            <p>TOTAL STORAGE</p>
+            <h3 id="statTotalSize">0 MB</h3>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper amber">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </div>
+          <div class="stat-content">
+            <p>ZERO DELETION</p>
+            <h3 id="statProtection">Protected</h3>
+          </div>
+        </div>
+      </section>
+
+      <!-- View 1: Workspace -->
+      <div id="viewWorkspace" class="tab-view active-tab-view">
+        <section class="content-card" id="workspaceCard">
+          <!-- Simplified Universal Action Bar -->
+          <div class="workspace-top-bar">
+            <div class="folder-display-group" id="folderDisplayGroup" title="Drag and drop any folder here or click Change Folder">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+              </svg>
+              <select id="quickFolderSelect" class="folder-select-pill">
+                <option value="Downloads">Downloads</option>
+                <option value="Desktop">Desktop</option>
+                <option value="Documents">Documents</option>
+                <option value="Pictures">Pictures</option>
+                <option value="Videos">Videos</option>
+                <option value="Music">Music</option>
+                <option value="Custom">Custom Folder...</option>
+              </select>
+              <span class="active-folder-label" id="activeFolderLabel">Downloads</span>
+              <button class="btn-clean-text" id="btnBrowseFolder">Browse</button>
+            </div>
+
+            <div class="workspace-actions-group">
+              <label class="toggle-option-label" title="Include files inside nested subfolders">
+                <input type="checkbox" id="includeSubfoldersCheck" class="custom-checkbox">
+                <span>Include Subfolders</span>
+              </label>
+
+              <select id="modelSelect" class="model-dropdown">
+                <option value="qwen2.5:3b">qwen2.5 3b (Recommended)</option>
+              </select>
+
+              <div class="search-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="filterInput" placeholder="Filter files...">
+              </div>
+
+              <!-- Unified Primary Button -->
+              <button class="btn-primary btn-large-action" id="btnMainAction">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <span id="mainActionBtnText">Organize Files</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Progress Bar with Live Batch Percentage -->
+          <div class="progress-card" id="progressCard">
+            <div class="progress-header">
+              <span id="progressStatusLabel">AI model analyzing file metadata and text previews...</span>
+              <span id="progressPercent">0%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-bar-fill" id="progressBarFill"></div>
+            </div>
+          </div>
+
+          <!-- Files Table Container -->
+          <div class="table-container">
+            <table class="files-table" id="filesTable">
+              <thead>
+                <tr>
+                  <th style="width: 44px;">
+                    <input type="checkbox" id="selectAllCheckbox" class="custom-checkbox" checked>
+                  </th>
+                  <th>File Name</th>
+                  <th>Type and Size</th>
+                  <th>Context Preview</th>
+                  <th>Suggested Detailed Folder</th>
+                  <th>Reasoning</th>
+                </tr>
+              </thead>
+              <tbody id="filesTableBody">
+                <!-- Rows injected by JavaScript -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Empty State -->
+          <div class="empty-state-box" id="emptyStateBox">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+              <line x1="12" y1="11" x2="12" y2="17"></line>
+              <line x1="9" y1="14" x2="15" y2="14"></line>
+            </svg>
+            <h4>No loose files in this folder</h4>
+            <p>Your folder is already neat and organized, or contains no loose unorganized files.</p>
+          </div>
+        </section>
+      </div>
+
+      <!-- View 2: Folder Tree Preview -->
+      <div id="viewTree" class="tab-view" style="display: none;">
+        <section class="content-card">
+          <div class="card-title-bar">
+            <div>
+              <h3>Detailed Folder Structure</h3>
+              <p class="card-subtitle">Preview the proposed hierarchical destination folders</p>
+            </div>
+          </div>
+          <div class="tree-container" id="treePreviewContainer">
+            <div class="empty-state-box">
+              <p>Run the AI categorizer first to see the generated detailed folder hierarchy.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- View 3: Safety and History -->
+      <div id="viewHistory" class="tab-view" style="display: none;">
+        <section class="content-card">
+          <div class="card-title-bar">
+            <div>
+              <h3>Safety Ledger and Rollback</h3>
+              <p class="card-subtitle">Every move is logged in SQLite. Click Undo on any batch to restore files immediately.</p>
+            </div>
+            <button class="btn-secondary" id="btnRefreshHistory">Refresh Ledger</button>
+          </div>
+
+          <div id="historyListContainer">
+            <!-- Batches injected by JavaScript -->
+          </div>
+        </section>
+      </div>
+
+      <!-- View 4: Model Settings -->
+      <div id="viewSettings" class="tab-view" style="display: none;">
+        <section class="content-card">
+          <div class="card-title-bar">
+            <div>
+              <h3>Model Configuration</h3>
+              <p class="card-subtitle">Local Ollama parameters and categorization guidelines</p>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 20px; max-width: 600px;">
+            <div>
+              <label style="font-size: 13px; font-weight: 700; color: var(--text-navy); display: block; margin-bottom: 6px;">Ollama Endpoint</label>
+              <input type="text" class="category-input" value="http://localhost:11434" readonly style="color: var(--text-muted); background-color: var(--bg-input);">
+            </div>
+
+            <div>
+              <label style="font-size: 13px; font-weight: 700; color: var(--text-navy); display: block; margin-bottom: 6px;">Available 3B Models</label>
+              <div id="settingsModelList" style="display: flex; flex-direction: column; gap: 8px;">
+                <div class="model-name-badge">qwen2.5 3b (Ready)</div>
+              </div>
+            </div>
+
+            <div style="background-color: var(--bg-input); border-radius: var(--radius-inner); padding: 18px; border: 1px solid var(--border-soft);">
+              <h4 style="font-size: 14px; font-weight: 700; color: var(--text-navy); margin-bottom: 8px;">Detailed Categorization Standard</h4>
+              <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5;">
+                Generic buckets such as documents, archives, images, or miscellaneous are strictly prohibited.
+                The model inspects file metadata and text excerpts to group files into granular topics such as Financial Records, Software Engineering, Academic Papers, and Brand Assets.
+              </p>
+            </div>
+
+            <div style="background-color: var(--accent-mint-light); border-radius: var(--radius-inner); padding: 18px; border: 1px solid rgba(5, 205, 153, 0.2);">
+              <h4 style="font-size: 14px; font-weight: 700; color: var(--accent-mint); margin-bottom: 8px;">Zero Deletion Guarantee</h4>
+              <p style="font-size: 13px; color: var(--text-navy); line-height: 1.5;">
+                Files are strictly moved without deletion. If a file with an identical name already exists in a destination folder, a numbered suffix is appended automatically so no data is ever overwritten.
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
