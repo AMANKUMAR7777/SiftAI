@@ -37,6 +37,10 @@ def sanitize_folder_path(path_str: str) -> str:
 
 def query_ollama_batch(model: str, files_batch: List[Dict[str, Any]]) -> List[Dict[str, str]]:
     """Query Ollama with a batch of files and request structured JSON output."""
+    chosen_model = model or DEFAULT_MODEL
+    if not chosen_model:
+        return generate_fallback_categories(files_batch)
+
     file_descriptions = []
     for f in files_batch:
         item = f"File: {f['name']} ({f['extension']})"
@@ -47,7 +51,7 @@ def query_ollama_batch(model: str, files_batch: List[Dict[str, Any]]) -> List[Di
     user_prompt = "Categorize these files into detailed folders. Return JSON array:\n" + "\n".join(file_descriptions)
 
     payload = {
-        "model": model or DEFAULT_MODEL,
+        "model": chosen_model,
         "messages": [
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": user_prompt}
@@ -210,10 +214,11 @@ def check_ollama_status() -> Dict[str, Any]:
         if resp.status_code == 200:
             data = resp.json()
             models = [m.get("name") for m in data.get("models", [])]
+            default_m = DEFAULT_MODEL if (DEFAULT_MODEL and DEFAULT_MODEL in models) else (models[0] if models else "")
             return {
                 "online": True,
                 "models": models,
-                "default_model": DEFAULT_MODEL if DEFAULT_MODEL in models else (models[0] if models else DEFAULT_MODEL)
+                "default_model": default_m
             }
     except Exception:
         pass
@@ -221,7 +226,7 @@ def check_ollama_status() -> Dict[str, Any]:
     return {
         "online": False,
         "models": [],
-        "default_model": DEFAULT_MODEL
+        "default_model": DEFAULT_MODEL or ""
     }
 
 

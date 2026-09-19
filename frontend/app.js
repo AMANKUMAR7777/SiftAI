@@ -86,13 +86,8 @@ async function initSystem() {
       ollamaStatusText.textContent = 'Ollama Standby';
     }
 
-    state.models = ollama.models || ['qwen2.5:3b'];
-    // Default to qwen2.5:3b if available because it fits 100% in GPU
-    if (state.models.includes('qwen2.5:3b')) {
-      state.activeModel = 'qwen2.5:3b';
-    } else {
-      state.activeModel = ollama.default_model || state.models[0] || 'qwen2.5:3b';
-    }
+    state.models = ollama.models || [];
+    state.activeModel = ollama.default_model || (state.models.length > 0 ? state.models[0] : '');
 
     populateModelDropdown();
     updateModelBadge();
@@ -109,23 +104,39 @@ function populateModelDropdown() {
   modelSelect.innerHTML = '';
   settingsModelList.innerHTML = '';
 
+  if (state.models.length === 0) {
+    const opt = document.createElement('option');
+    opt.value = '';
+    opt.textContent = 'Smart Semantic Heuristics';
+    modelSelect.appendChild(opt);
+
+    const badge = document.createElement('div');
+    badge.className = 'model-name-badge';
+    badge.textContent = 'Smart Semantic Heuristics Active';
+    settingsModelList.appendChild(badge);
+    return;
+  }
+
   state.models.forEach(m => {
     const opt = document.createElement('option');
     opt.value = m;
-    const isQwen = m.includes('qwen');
-    opt.textContent = `${cleanModelDisplayName(m)} ${isQwen ? '(Recommended)' : ''}`;
+    opt.textContent = cleanModelDisplayName(m);
     if (m === state.activeModel) opt.selected = true;
     modelSelect.appendChild(opt);
 
     const badge = document.createElement('div');
     badge.className = 'model-name-badge';
-    badge.textContent = `${cleanModelDisplayName(m)} (Available)`;
+    badge.textContent = `${cleanModelDisplayName(m)} (Installed)`;
     settingsModelList.appendChild(badge);
   });
 }
 
 function updateModelBadge() {
-  sidebarActiveModel.textContent = `Model: ${cleanModelDisplayName(state.activeModel)}`;
+  if (state.activeModel) {
+    sidebarActiveModel.textContent = `Model: ${cleanModelDisplayName(state.activeModel)}`;
+  } else {
+    sidebarActiveModel.textContent = 'Model: Smart Rules';
+  }
 }
 
 modelSelect.addEventListener('change', (e) => {

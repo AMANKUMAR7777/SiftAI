@@ -13,7 +13,7 @@ DEFAULT_TARGET_DIR = str(Path.home() / "Downloads")
 
 # Ollama API Configuration
 OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
-DEFAULT_MODEL = "qwen2.5:3b"
+DEFAULT_MODEL = os.environ.get("OLLAMA_MODEL", "")
 
 # Safe Processing Settings
 BATCH_SIZE = 18
